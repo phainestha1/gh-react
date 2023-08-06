@@ -9,12 +9,13 @@ import Login from './login';
 import Main from './main';
 import Home from './home';
 import Creation from './creation';
+import Writing from './writing';
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Main />,
-    errorElement: <ErrorPage />
+    errorElement: <ErrorPage />,
   },
   {
     path: "/login",
@@ -22,12 +23,16 @@ const router = createBrowserRouter([
   },
   {
     path: "/home",
-    element: <Home />
+    element: <Home />,
   },
   {
     path: "/creation",
     element: <Creation />
   },
+  {
+    path: "writing/:id",
+    element: <Writing />
+  }
 ]);
 
 const root = ReactDOM.createRoot(

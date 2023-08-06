@@ -13,8 +13,8 @@ function Creation() {
     const createPannel = async() => {
         try {
             const docRef = await addDoc(collection(db, "pannels"), {
-              serial: serial,
               id: Date.now(),
+              serial: serial,
               pannelName: pannelName,
               machineNumber: machineNumber,
             });
@@ -32,9 +32,27 @@ function Creation() {
             <option value="B">B</option>
             <option value="C">C</option>
         </select>
-        <input placeholder='패널명' type="text" name="pannelName" value={pannelName} onChange={(event) => {setPannelName(event.target.value)}} />
-        <input placeholder='계기번호' type="text" name="machineNumber" value={machineNumber} onChange={(event) => {setMachineNumber(event.target.value)}} />
-        <input placeholder='점포명' type="text" name="check" value={check} onChange={(event) => {setCheck(event.target.value)}} />
+        <input 
+          placeholder='패널명' 
+          type="text" 
+          name="pannelName" 
+          value={pannelName} 
+          onChange={(event) => {setPannelName(event.target.value)}} 
+        />
+        <input 
+          placeholder='계기번호' 
+          type="text" 
+          name="machineNumber" 
+          value={machineNumber} 
+          onChange={(event) => {setMachineNumber(event.target.value)}} 
+        />
+        <input 
+          placeholder='점포명' 
+          type="text" 
+          name="check" 
+          value={check} 
+          onChange={(event) => {setCheck(event.target.value)}} 
+        />
         <button onClick={createPannel}>생성하기</button>
         <button onClick={() => navigate("/home")}>목록으로</button>
     </>

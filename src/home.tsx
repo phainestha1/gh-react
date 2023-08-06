@@ -18,21 +18,21 @@ function Home() {
     console.log(document)
   }
 
-  // Force inactive users to the login page.
+  // Force inactive users get back to the login page.
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (!user) { navigate("/");}
       if (document.length === 0) { loadPannelData() }
     });
     console.log(document)
-  }, [navigate, document]);
+  }, [navigate]);
 
   return (
     <>
       <h1>적산전력계 홈 화면</h1>
       {document.map((data: any) => {
         return (
-        <div key={data.id}>
+        <div key={data.id} onClick={() => navigate(`/writing/${data.id}`)}>
           <h3>{data.id}</h3>
           <h3>{data.pannelName}</h3>
           <h3>{data.machineNumber}</h3>
@@ -40,8 +40,6 @@ function Home() {
         )
       })}
       <button onClick={() => navigate("/creation")}>만들기</button>
-      <button>작성하기</button>
-      <button>수정하기</button>
     </>
   );
 }

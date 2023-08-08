@@ -6,9 +6,10 @@ import { db } from "./firebase/firebase-config";
 export default function Writing() {
   const [text, setText] = useState("");
   const [data, setData] = useState<any>([]);
+  const [document, setDocument] = useState<any>([]);
   const location = useLocation();
   const pannelId = Number(location.pathname.slice(9));
-  
+
   const createRecord = async () => {
     try {
       const docRef = await addDoc(collection(db, "records"), {
@@ -23,24 +24,40 @@ export default function Writing() {
   };
 
   useEffect(() => {
-    const getPannelData = async() => {
-        const arr: any = []
-        const q = query(collection(db, "pannels"), where("id", "==", pannelId));
-        const querySnapshot = await getDocs(q);
-        querySnapshot.forEach((doc) => {
-            arr.push(doc.data())
-        });
-        setData([...arr])
-    }
+    const getPannelData = async () => {
+      const arr: any = [];
+      const q = query(collection(db, "pannels"), where("id", "==", pannelId));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        arr.push(doc.data());
+      });
+      setData([...arr]);
+    };
+    const getRecordData = async () => {
+      const arr: any = [];
+      const q = query(
+        collection(db, "records"),
+        where("pannelId", "==", pannelId)
+      );
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        arr.push(doc.data());
+      });
+      setDocument([...arr]);
+    };
 
-    getPannelData()
+    getPannelData();
+    getRecordData();
   }, [pannelId]);
 
   return (
     <div>
-    {data.map((data: any) => {
-        return <h3 key={data.id}>{data.pannelName}</h3>
-    })}
+      {data.map((data: any) => {
+        return <h3 key={data.id}>{data.pannelName}</h3>;
+      })}
+      {document.map((data: any) => {
+        return <h3 key={data.id}>{data.text}</h3>;
+      })}
       <input
         placeholder="text"
         type="text"

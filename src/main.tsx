@@ -4,6 +4,8 @@ import { auth } from "./firebase/firebase-config";
 import { useNavigate } from "react-router";
 import Login from "./login";
 import Home from "./home";
+import { Wrapper } from "./style/main";
+import "./style/App.css";
 
 function Main() {
   const navigate = useNavigate();
@@ -18,9 +20,9 @@ function Main() {
   // }, []);
 
   return (
-    <div>
+    <Wrapper>
       <Login />
-    </div>
+    </Wrapper>
   );
 }
 

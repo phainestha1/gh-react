@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { useNavigate } from 'react-router-dom';
-import { auth } from './firebase/firebase-config';
+import { useNavigate } from "react-router-dom";
+import { auth } from "./firebase/firebase-config";
+import { Wrapper, Title } from "./style/login";
+import { Button, Input } from "./style/component";
 
 function Login() {
   const [email, setEmail] = useState<string>("");
@@ -10,35 +12,38 @@ function Login() {
 
   const authUser = () => {
     signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      const user = userCredential.user;
-      console.log(user);
-      if (user) { navigate("/home") }
-
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-    })
-  }
+      .then((userCredential) => {
+        const user = userCredential.user;
+        console.log(user);
+        if (user) {
+          navigate("/home");
+        }
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+      });
+  };
 
   return (
-    <div>
-      <h1>로그인 화면</h1>
-      <input 
-      type="text" 
-      name="id"
-      onChange = { event => setEmail(event.target.value) } 
-      value={email} 
+    <Wrapper>
+      <Title>로그인</Title>
+      <Input
+        type="text"
+        name="id"
+        placeholder="아이디"
+        onChange={(event) => setEmail(event.target.value)}
+        value={email}
       />
-      <input 
-      type="password" 
-      name="password" 
-      onChange = { event => setPassword(event.target.value) } 
-      value={password} 
+      <Input
+        type="password"
+        name="password"
+        placeholder="비밀번호"
+        onChange={(event) => setPassword(event.target.value)}
+        value={password}
       />
-      <button onClick={authUser}>로그인</button>
-    </div>
+      <Button onClick={authUser}>로그인</Button>
+    </Wrapper>
   );
 }
 

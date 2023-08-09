@@ -1,15 +1,12 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
-import ErrorPage from './component/error-page';
-import Login from './login';
-import Main from './main';
-import Home from './home';
-import Creation from './creation';
-import Writing from './writing';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import ErrorPage from "./component/error-page";
+import Login from "./login";
+import Main from "./main";
+import Home from "./home";
+import Creation from "./creation";
+import Writing from "./writing";
 
 const router = createBrowserRouter([
   {
@@ -19,7 +16,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/login",
-    element: <Login />
+    element: <Login />,
   },
   {
     path: "/home",
@@ -27,16 +24,16 @@ const router = createBrowserRouter([
   },
   {
     path: "/creation",
-    element: <Creation />
+    element: <Creation />,
   },
   {
     path: "writing/:id",
-    element: <Writing />
-  }
+    element: <Writing />,
+  },
 ]);
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+  document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>

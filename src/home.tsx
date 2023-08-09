@@ -12,9 +12,9 @@ function Home() {
 
   const loadPannelData = async () => {
     const arr: any = [];
-    const q = query(collection(db, "pannels"), orderBy("id", "asc"));
+    const q = query(collection(db, "pannels"), orderBy("serial"));
     const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc: any) => {
+    querySnapshot.forEach(async (doc: any) => {
       const data = doc.data();
       arr.push(data);
     });
@@ -31,8 +31,12 @@ function Home() {
         loadPannelData();
       }
     });
-    console.log(document);
   }, [navigate]);
+
+  const convert = (int: number) => {
+    const date = new Date(int);
+    return date.toLocaleDateString();
+  };
 
   return (
     <Wrapper>
@@ -55,8 +59,8 @@ function Home() {
               <td>{data.serial}</td>
               <PannelCell>{data.pannelName}</PannelCell>
               <td>{data.machineNumber}</td>
-              <td>{data.id}</td>
-              <td>{Date.now()}</td>
+              <td>{data.records[0]?.text}</td>
+              <td>{convert(data.records[0]?.createdAt)}</td>
             </TableDataCell>
           );
         })}

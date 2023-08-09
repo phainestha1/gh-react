@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { collection, addDoc } from "firebase/firestore";
+import { setDoc, doc } from "firebase/firestore";
 import { db } from "./firebase/firebase-config";
 import { useNavigate } from "react-router";
 import { Select, Wrapper } from "./style/creation";
@@ -13,17 +13,16 @@ function Creation() {
   const navigate = useNavigate();
 
   const createPannel = async () => {
+    const id = Date.now().toString();
     try {
-      const docRef = await addDoc(collection(db, "pannels"), {
-        id: Date.now(),
+      await setDoc(doc(db, "pannels", id), {
+        id: id,
         serial: serial,
         pannelName: pannelName,
         machineNumber: machineNumber,
+        records: [],
       });
-      if (docRef.id) {
-        console.log("패널이 생성되었습니다.", docRef.id);
-        navigate("/home");
-      }
+      navigate("/home");
     } catch (error) {
       console.error("Error adding document: ", error);
     }

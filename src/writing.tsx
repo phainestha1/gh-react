@@ -1,23 +1,47 @@
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
-import { collection, addDoc, where, query, getDocs } from "firebase/firestore";
+import { useLocation, useNavigate } from "react-router-dom";
+import {
+  collection,
+  doc,
+  updateDoc,
+  where,
+  query,
+  getDocs,
+  limit,
+  getDoc,
+} from "firebase/firestore";
 import { db } from "./firebase/firebase-config";
+import { Wrapper } from "./style/writing";
+import { Button, Input } from "./style/component";
+import { Table, TableDataCell } from "./style/home";
 
 export default function Writing() {
   const [text, setText] = useState("");
   const [data, setData] = useState<any>([]);
-  const [document, setDocument] = useState<any>([]);
   const location = useLocation();
+  const navigate = useNavigate();
   const pannelId = Number(location.pathname.slice(9));
 
   const createRecord = async () => {
+    const previousRecords: any = [];
+    const docRef = doc(db, "pannels", pannelId.toString());
+    const docSnap = await getDoc(docRef);
+
     try {
-      const docRef = await addDoc(collection(db, "records"), {
-        id: Date.now(),
-        pannelId: pannelId,
-        text: text,
-      });
-      console.log("Document written with ID: ", docRef.id);
+      if (docSnap.data()?.records) {
+        previousRecords.push(...docSnap.data()?.records);
+        await updateDoc(docRef, {
+          records: [
+            { id: Date.now(), createdAt: Date.now(), text: text },
+            ...previousRecords,
+          ],
+        });
+      } else {
+        await updateDoc(docRef, {
+          records: [{ id: Date.now(), createdAt: Date.now(), text: text }],
+        });
+      }
+      navigate("/home");
     } catch (error) {
       console.error("Error adding document: ", error);
     }
@@ -26,39 +50,46 @@ export default function Writing() {
   useEffect(() => {
     const getPannelData = async () => {
       const arr: any = [];
-      const q = query(collection(db, "pannels"), where("id", "==", pannelId));
+      const q = query(
+        collection(db, "pannels"),
+        where("id", "==", pannelId.toString()),
+        limit(1)
+      );
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
         arr.push(doc.data());
       });
       setData([...arr]);
     };
-    const getRecordData = async () => {
-      const arr: any = [];
-      const q = query(
-        collection(db, "records"),
-        where("pannelId", "==", pannelId)
-      );
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
-        arr.push(doc.data());
-      });
-      setDocument([...arr]);
-    };
 
     getPannelData();
-    getRecordData();
   }, [pannelId]);
 
+  const convert = (int: number) => {
+    const date = new Date(int);
+    return date.toLocaleDateString();
+  };
+
   return (
-    <div>
+    <Wrapper>
       {data.map((data: any) => {
-        return <h3 key={data.id}>{data.pannelName}</h3>;
+        return <h2 key={data.id}>{data.pannelName}</h2>;
       })}
-      {document.map((data: any) => {
-        return <h3 key={data.id}>{data.text}</h3>;
-      })}
-      <input
+      <Table>
+        <tr>
+          <th>날짜</th>
+          <th>지침</th>
+        </tr>
+        {data[0]?.records.map((data: any) => {
+          return (
+            <TableDataCell key={data.id}>
+              <td>{convert(data.createdAt)}</td>
+              <td>{data.text}</td>
+            </TableDataCell>
+          );
+        })}
+      </Table>
+      <Input
         placeholder="text"
         type="text"
         name="text"
@@ -67,7 +98,8 @@ export default function Writing() {
           setText(event.target.value);
         }}
       />
-      <button onClick={createRecord}>작성 완료</button>
-    </div>
+      <Button onClick={createRecord}>작성 완료</Button>
+      <Button onClick={() => navigate("/home")}>목록으로</Button>
+    </Wrapper>
   );
 }

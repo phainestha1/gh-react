@@ -26,15 +26,15 @@ export const Button = styled.button`
   font-weight: 600;
   justify-content: center;
   line-height: 1.25;
-  margin-bottom: 15px;
+  margin: 10px;
   min-height: 3rem;
   padding: calc(0.875rem - 1px) calc(1.5rem - 1px);
   position: relative;
   text-decoration: none;
-  transition: all 250ms;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  vertical-align: baseline;
-  width: auto;
 `;
+
+export const HorizontalDiv = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+`

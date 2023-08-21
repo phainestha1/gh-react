@@ -4,6 +4,7 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 50vw;
 `;
 
 export const Table = styled.table`
@@ -11,7 +12,7 @@ export const Table = styled.table`
 `;
 
 export const TableDataCell = styled.tr`
-  /* background-color: red; */
+  text-align: center;
 `;
 
 export const PannelCell = styled.td`

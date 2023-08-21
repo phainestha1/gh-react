@@ -31,7 +31,7 @@ function Home() {
         loadPannelData();
       }
     });
-  }, [navigate]);
+  });
 
   const convert = (int: number) => {
     const date = new Date(int);
@@ -54,12 +54,12 @@ function Home() {
           return (
             <TableDataCell
               key={data.id}
-              onClick={() => navigate(`/writing/${data.id}`)}
+              onClick={() => navigate(`/detail/${data.id}`)}
             >
               <td>{data.serial}</td>
               <PannelCell>{data.pannelName}</PannelCell>
               <td>{data.machineNumber}</td>
-              <td>{data.records[0]?.text}</td>
+              <td>{data.records[0]?.record}</td>
               <td>{convert(data.records[0]?.createdAt)}</td>
             </TableDataCell>
           );
@@ -71,9 +71,3 @@ function Home() {
 }
 
 export default Home;
-
-{
-  /* <CSVLink headers={csvHeaders} data={document}>
-적산전력 기록 다운로드
-</CSVLink> */
-}

@@ -8,6 +8,7 @@ import Home from "./home";
 import Creation from "./creation";
 import Detail from "./detail";
 import Writing from "./writing";
+import Update from "./update";
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
   {
     path: "writing/:id",
     element: <Writing />,
+  },
+  {
+    path: "update/:id",
+    element: <Update />,
   },
 ]);
 

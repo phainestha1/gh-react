@@ -42,7 +42,7 @@ const router = createBrowserRouter(
       element: <Update />,
     },
   ],
-  { basename: `${process.env.PUBLIC_URL}` }
+  { basename: "/gh-react" }
 );
 
 const root = ReactDOM.createRoot(

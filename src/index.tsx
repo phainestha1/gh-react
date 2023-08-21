@@ -10,37 +10,40 @@ import Detail from "./detail";
 import Writing from "./writing";
 import Update from "./update";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Main />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: "/login",
-    element: <Login />,
-  },
-  {
-    path: "/home",
-    element: <Home />,
-  },
-  {
-    path: "/creation",
-    element: <Creation />,
-  },
-  {
-    path: "detail/:id",
-    element: <Detail />,
-  },
-  {
-    path: "writing/:id",
-    element: <Writing />,
-  },
-  {
-    path: "update/:id",
-    element: <Update />,
-  },
-]);
+const router = createBrowserRouter(
+  [
+    {
+      path: "/",
+      element: <Main />,
+      errorElement: <ErrorPage />,
+    },
+    {
+      path: "/login",
+      element: <Login />,
+    },
+    {
+      path: "/home",
+      element: <Home />,
+    },
+    {
+      path: "/creation",
+      element: <Creation />,
+    },
+    {
+      path: "detail/:id",
+      element: <Detail />,
+    },
+    {
+      path: "writing/:id",
+      element: <Writing />,
+    },
+    {
+      path: "update/:id",
+      element: <Update />,
+    },
+  ],
+  { basename: `${process.env.PUBLIC_URL}` }
+);
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement

@@ -7,13 +7,11 @@ import {
   getDocs,
   limit,
   doc,
-  getDoc,
   updateDoc,
 } from "firebase/firestore";
 import { auth, db } from "./firebase/firebase-config";
 import { Wrapper } from "./style/writing";
-import { Button, HorizontalDiv, Input } from "./style/component";
-import { Table, TableDataCell } from "./style/home";
+import { Button, Input } from "./style/component";
 import { Select } from "./style/creation";
 import { onAuthStateChanged } from "firebase/auth";
 

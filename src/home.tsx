@@ -1,25 +1,25 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { auth, db } from "./firebase/firebase-config";
 import { onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from "react-router";
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { Button } from "./style/component";
-import { PannelCell, Table, TableDataCell, Wrapper } from "./style/home";
+import { PannelCell, TableDataCell, Wrapper } from "./style/home";
+import Table from "./component/table";
 
 function Home() {
   const [document, setDocument] = useState<any>([]);
+  const columns = useMemo(
+    () => [
+      { accessor: "serial", Header: "순번" },
+      { accessor: "pannelName", Header: "판넬명" },
+      { accessor: "machineNumber", Header: "계기번호" },
+      { accessor: "latestRecord", Header: "지침" },
+      { accessor: "latestRecordDate", Header: "최근 지침일" },
+    ],
+    []
+  );
   const navigate = useNavigate();
-
-  const loadPannelData = async () => {
-    const arr: any = [];
-    const q = query(collection(db, "pannels"), orderBy("serial"));
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach(async (doc: any) => {
-      const data = doc.data();
-      arr.push(data);
-    });
-    setDocument([...arr]);
-  };
 
   // Force inactive users get back to the login page.
   useEffect(() => {
@@ -33,38 +33,44 @@ function Home() {
     });
   });
 
-  const convert = (int: number) => {
-    const date = new Date(int);
-    return date.toLocaleDateString();
+  const loadPannelData = async () => {
+    const arr: any = [];
+    const q = query(collection(db, "pannels"), orderBy("serial"));
+
+    const convert = (int: number) => {
+      const date = new Date(int);
+      return date.toLocaleDateString();
+    };
+  
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach(async (doc: any) => {
+      const data = doc.data();
+      const tableData = {
+        id: data.id,
+        clientName: data.clientName,
+        ctpt: data.ctpt,
+        dateOfInstall: data.dateOfInstall,
+        drain: data.drain,
+        location: data.location,
+        machineNumber: data.machineNumber,
+        pannelName: data.pannelName,
+        records: data.records[0],
+        latestRecord: data.records[0].record,
+        latestRecordDate: convert(data.records[0].createdAt),
+        serial: data.serial,
+        shape: data.shape
+      }
+      arr.push(tableData);
+    });
+
+    setDocument([...arr]);
   };
 
   return (
     <Wrapper>
       <h1>적산전력계 기록</h1>
       <h5>판넬명을 터치하여 상세 화면으로 이동합니다.</h5>
-      <Table>
-        <tr>
-          <th>순번</th>
-          <th>판넬명</th>
-          <th>계기번호</th>
-          <th>지침</th>
-          <th>최근 지침일</th>
-        </tr>
-        {document.map((data: any) => {
-          return (
-            <TableDataCell
-              key={data.id}
-              onClick={() => navigate(`/detail/${data.id}`)}
-            >
-              <td>{data.serial}</td>
-              <PannelCell>{data.pannelName}</PannelCell>
-              <td>{data.machineNumber}</td>
-              <td>{data.records[0]?.record}</td>
-              <td>{convert(data.records[0]?.createdAt)}</td>
-            </TableDataCell>
-          );
-        })}
-      </Table>
+      <Table columns={columns} data={document} />
       <Button onClick={() => navigate("/creation")}>새판넬 등록</Button>
     </Wrapper>
   );

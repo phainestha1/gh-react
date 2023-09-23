@@ -10,11 +10,12 @@ import {
   getDoc,
   updateDoc,
 } from "firebase/firestore";
-import { db } from "./firebase/firebase-config";
+import { auth, db } from "./firebase/firebase-config";
 import { Wrapper } from "./style/writing";
 import { Button, HorizontalDiv, Input } from "./style/component";
 import { Table, TableDataCell } from "./style/home";
 import { Select } from "./style/creation";
+import { onAuthStateChanged } from "firebase/auth";
 
 export default function Update() {
   const [data, setData] = useState<any>([]);
@@ -57,6 +58,14 @@ export default function Update() {
     getPannelData();
   }, [pannelId]);
 
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        navigate("/login");
+      }
+    });
+  })
+    
   const updatePannelInfo = async () => {
     const docRef = doc(db, "pannels", pannelId.toString());
 

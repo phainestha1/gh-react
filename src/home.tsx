@@ -25,7 +25,7 @@ function Home() {
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (!user) {
-        navigate("/");
+        navigate("/login");
       }
       if (document.length === 0) {
         loadPannelData();

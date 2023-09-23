@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { setDoc, doc } from "firebase/firestore";
-import { db } from "./firebase/firebase-config";
+import { auth, db } from "./firebase/firebase-config";
 import { useNavigate } from "react-router";
 import { Select, Wrapper } from "./style/creation";
 import { Button, Input } from "./style/component";
+import { onAuthStateChanged } from "firebase/auth";
 
 function Creation() {
   const [serial, setSerial] = useState("A");
@@ -16,6 +17,15 @@ function Creation() {
   const [dateOfInstall, setDateOfInstall] = useState("");
   const [location, setLocation] = useState("");
   const navigate = useNavigate();
+
+  // Force inactive users get back to the login page.
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        navigate("/login");
+      }
+    });
+  });
 
   const createPannel = async () => {
     const id = Date.now().toString();

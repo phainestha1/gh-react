@@ -2,8 +2,8 @@ import { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { auth } from "./firebase/firebase-config";
-import { Wrapper, Title } from "./style/login";
-import { Button, Input } from "./style/component";
+import { Wrapper, Title, LoginButton, BlankView } from "./style/login";
+import { Input } from "./style/component";
 
 function Login() {
   const [email, setEmail] = useState<string>("");
@@ -31,7 +31,7 @@ function Login() {
       <Input
         type="text"
         name="id"
-        placeholder="아이디"
+        placeholder="이메일"
         onChange={(event) => setEmail(event.target.value)}
         value={email}
       />
@@ -42,7 +42,8 @@ function Login() {
         onChange={(event) => setPassword(event.target.value)}
         value={password}
       />
-      <Button onClick={authUser}>로그인</Button>
+      <BlankView />
+      <LoginButton onClick={authUser}>로그인</LoginButton>
     </Wrapper>
   );
 }

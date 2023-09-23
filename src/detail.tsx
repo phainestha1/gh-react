@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { collection, where, query, getDocs, limit } from "firebase/firestore";
-import { db } from "./firebase/firebase-config";
+import { auth, db } from "./firebase/firebase-config";
 import { Wrapper } from "./style/writing";
 import { Button, HorizontalDiv } from "./style/component";
 import { Table, TableDataCell } from "./style/home";
+import { onAuthStateChanged } from "firebase/auth";
 
 export default function Detail() {
   const [data, setData] = useState<any>([]);
@@ -29,6 +30,15 @@ export default function Detail() {
 
     getPannelData();
   }, [pannelId]);
+
+  // Force inactive users get back to the login page.
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        navigate("/login");
+      }
+    });
+  });
 
   const convert = (int: number) => {
     const date = new Date(int);
@@ -55,8 +65,12 @@ export default function Detail() {
         })}
       </Table>
       <HorizontalDiv>
-        <Button onClick={() => navigate(`/writing/${pannelId}`)}>새 지침 등록</Button>
-        <Button onClick={() => navigate(`/update/${pannelId}`)}>패널정보 수정하기</Button>
+        <Button onClick={() => navigate(`/writing/${pannelId}`)}>
+          새 지침 등록
+        </Button>
+        <Button onClick={() => navigate(`/update/${pannelId}`)}>
+          패널정보 수정하기
+        </Button>
         <Button onClick={() => navigate("/home")}>목록으로</Button>
       </HorizontalDiv>
     </Wrapper>

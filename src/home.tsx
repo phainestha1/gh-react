@@ -4,11 +4,13 @@ import { onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from "react-router";
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { Button } from "./style/component";
-import { PannelCell, TableDataCell, Wrapper } from "./style/home";
+import { Wrapper } from "./style/home";
 import Table from "./component/table";
 
 function Home() {
+  const navigate = useNavigate();
   const [document, setDocument] = useState<any>([]);
+  const [idList, setIdList] = useState<any>([]);
   const columns = useMemo(
     () => [
       { accessor: "serial", Header: "순번" },
@@ -19,7 +21,6 @@ function Home() {
     ],
     []
   );
-  const navigate = useNavigate();
 
   // Force inactive users get back to the login page.
   useEffect(() => {
@@ -35,42 +36,63 @@ function Home() {
 
   const loadPannelData = async () => {
     const arr: any = [];
+    const idArr: any = [];
     const q = query(collection(db, "pannels"), orderBy("serial"));
-
     const convert = (int: number) => {
       const date = new Date(int);
       return date.toLocaleDateString();
     };
-  
     const querySnapshot = await getDocs(q);
+
     querySnapshot.forEach(async (doc: any) => {
       const data = doc.data();
-      const tableData = {
-        id: data.id,
-        clientName: data.clientName,
-        ctpt: data.ctpt,
-        dateOfInstall: data.dateOfInstall,
-        drain: data.drain,
-        location: data.location,
-        machineNumber: data.machineNumber,
-        pannelName: data.pannelName,
-        records: data.records[0],
-        latestRecord: data.records[0].record,
-        latestRecordDate: convert(data.records[0].createdAt),
-        serial: data.serial,
-        shape: data.shape
+      let tableData = {}
+      if (data.records[0] == undefined) {
+        tableData = {
+          id: data.id,
+          clientName: data.clientName,
+          ctpt: data.ctpt,
+          dateOfInstall: data.dateOfInstall,
+          drain: data.drain,
+          location: data.location,
+          machineNumber: data.machineNumber,
+          pannelName: data.pannelName,
+          records: [],
+          latestRecord: "기록 없음",
+          latestRecordDate: "",
+          serial: data.serial,
+          shape: data.shape
+        }
+      } else {
+        tableData = {
+          id: data.id,
+          clientName: data.clientName,
+          ctpt: data.ctpt,
+          dateOfInstall: data.dateOfInstall,
+          drain: data.drain,
+          location: data.location,
+          machineNumber: data.machineNumber,
+          pannelName: data.pannelName,
+          records: data.records[0],
+          latestRecord: data.records[0].record,
+          latestRecordDate: convert(data.records[0].createdAt),
+          serial: data.serial,
+          shape: data.shape
+        }
       }
       arr.push(tableData);
+      idArr.push(data.id);
     });
 
     setDocument([...arr]);
+    setIdList([...idArr]);
   };
 
   return (
     <Wrapper>
       <h1>적산전력계 기록</h1>
       <h5>판넬명을 터치하여 상세 화면으로 이동합니다.</h5>
-      <Table columns={columns} data={document} />
+      <Table columns={columns} data={document} id={idList} />
       <Button onClick={() => navigate("/creation")}>새판넬 등록</Button>
     </Wrapper>
   );

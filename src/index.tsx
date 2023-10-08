@@ -9,6 +9,7 @@ import Creation from "./creation";
 import Detail from "./detail";
 import Writing from "./writing";
 import Update from "./update";
+import Inspection from "./inspection";
 
 const router = createBrowserRouter(
   [
@@ -40,6 +41,10 @@ const router = createBrowserRouter(
     {
       path: "update/:id",
       element: <Update />,
+    },
+    {
+      path: "inspection",
+      element: <Inspection />,
     },
   ],
   { basename: "/gh-react" }

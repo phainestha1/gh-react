@@ -2,6 +2,7 @@ import { useTable, useGlobalFilter, useSortBy } from "react-table";
 import Search from "./search"
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { Button } from "../style/component";
 
 interface Props {
   columns?: any;
@@ -19,8 +20,6 @@ function Table({ columns, data, id }: Props) {
     prepareRow,
     setGlobalFilter
   } = useTable({ columns, data }, useGlobalFilter, useSortBy);
-
-  useEffect(() => { console.log(rows) })
 
   return (
     <>
@@ -45,7 +44,7 @@ function Table({ columns, data, id }: Props) {
                 {row.cells.map((cell) => (
                   <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
                 ))}
-                <button onClick={() => navigate(`/detail/${id[row.id]}`)}>상세 보기</button>
+                <Button onClick={() => navigate(`/detail/${id[row.id]}`)}>상세 보기</Button>
               </tr>
             );
           })}

@@ -94,6 +94,7 @@ function Home() {
       <h5>판넬명을 터치하여 상세 화면으로 이동합니다.</h5>
       <Table columns={columns} data={document} id={idList} />
       <Button onClick={() => navigate("/creation")}>새판넬 등록</Button>
+      <Button onClick={() => navigate("/inspection")}>전체 점검하기</Button>
     </Wrapper>
   );
 }

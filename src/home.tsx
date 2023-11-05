@@ -47,7 +47,7 @@ function Home() {
     querySnapshot.forEach(async (doc: any) => {
       const data = doc.data();
       let tableData = {}
-      if (data.records[0] == undefined) {
+      if (data.records[0] === undefined) {
         tableData = {
           id: data.id,
           clientName: data.clientName,

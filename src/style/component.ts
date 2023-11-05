@@ -27,5 +27,4 @@ export const Button = styled.button`
 export const HorizontalDiv = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: center;
 `

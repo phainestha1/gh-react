@@ -7,22 +7,18 @@ import {
   query,
   updateDoc,
 } from "firebase/firestore";
-import { Button, Input } from "./style/component";
+import { Button, HorizontalDiv, Input } from "./style/component";
 import { Wrapper } from "./style/writing";
 import { db } from "./firebase/firebase-config";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { LoginButton } from "./style/login";
 
 export default function Inspection() {
   const [index, setIndex] = useState(0);
   const [document, setDocument] = useState<any>([]);
   const [inspectionList, setInspectionList] = useState<any>([]);
-  const [data, setData] = useState<any>([]);
   const [record, setRecord] = useState("");
   const navigate = useNavigate();
-  // const location = useLocation();
-  // const pannelId = Number(location.pathname.slice(9));
 
   useEffect(() => {
     loadPannelData();
@@ -34,18 +30,18 @@ export default function Inspection() {
   };
   const sortInspectionList = (serial: string) => {
     setIndex(0);
-    const result = document.filter((obj: any) => obj.serial == serial);
+    const result = document.filter((obj: any) => obj.serial === serial);
     setInspectionList(result);
   };
   const changeCurrentInspection = (order: string) => {
     console.log(order);
     switch (order) {
       case "back":
-        setIndex(index - 1)
+        setIndex(index - 1);
         break;
       case "next":
         if (index < inspectionList.length - 1) {
-          setIndex(index + 1)
+          setIndex(index + 1);
         }
         break;
     }
@@ -72,7 +68,7 @@ export default function Inspection() {
     });
     setDocument([...arr]);
   };
-  const createRecord = async (id : string) => {
+  const createRecord = async (id: string) => {
     const previousRecords: any = [];
     const docRef = doc(db, "pannels", id);
     const docSnap = await getDoc(docRef);
@@ -98,19 +94,18 @@ export default function Inspection() {
 
   return (
     <Wrapper>
-      <h1>정기 점검</h1>
-      <div>
+      <h1>정기 점검 ({convert(Date.now())})</h1>
+      <HorizontalDiv>
         <Button onClick={() => sortInspectionList("A")}>A</Button>
         <Button onClick={() => sortInspectionList("B")}>B</Button>
         <Button onClick={() => sortInspectionList("C")}>C</Button>
-      </div>
+      </HorizontalDiv>
 
-      <h1>{inspectionList.length != 0 ? "" : "순번을 선택하세요"}</h1>
+      <h1>{inspectionList.length !== 0 ? "" : "순번을 선택하세요"}</h1>
 
-      {inspectionList.length != 0 ? (
+      {inspectionList.length !== 0 ? (
         <>
           <h2>{inspectionList[index].pannelName}</h2>
-          <Input disabled name="dateOfRecord" value={convert(Date.now())} />
           <Input
             placeholder="지침을 입력하세요"
             type="text"
@@ -120,21 +115,27 @@ export default function Inspection() {
               setRecord(event.target.value);
             }}
           />
-          <div>
-            <Button 
-            onClick={() => changeCurrentInspection("back")} 
-            disabled={index == 0 ? true : false}
+          <h3>
+            {inspectionList.indexOf(inspectionList[index]) + 1}/
+            {inspectionList.length}
+          </h3>
+          <HorizontalDiv>
+            <Button
+              onClick={() => changeCurrentInspection("back")}
+              disabled={index === 0 ? true : false}
             >
               이전
             </Button>
-            <Button onClick={() => createRecord(inspectionList[index].id)}>등록하기</Button>
-            <Button 
-            onClick={() => changeCurrentInspection("next")} 
-            disabled={index >= inspectionList.length ? true : false}
+            <Button onClick={() => createRecord(inspectionList[index].id)}>
+              등록하기
+            </Button>
+            <Button
+              onClick={() => changeCurrentInspection("next")}
+              disabled={index >= inspectionList.length ? true : false}
             >
               다음
             </Button>
-          </div>
+          </HorizontalDiv>
         </>
       ) : (
         <></>

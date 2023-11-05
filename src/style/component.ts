@@ -13,7 +13,6 @@ export const Input = styled.input`
 `;
 
 export const Button = styled.button`
-  width: 100%;
   background-color: #000;
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 0.25rem;
@@ -27,4 +26,11 @@ export const Button = styled.button`
 export const HorizontalDiv = styled.div`
   display: flex;
   flex-direction: row;
-`
+`;
+
+export const HLine = styled.hr`
+  height: 2px;
+  border-width: 0;
+  color: black;
+  background-color: black;
+`;

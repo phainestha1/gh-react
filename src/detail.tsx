@@ -6,6 +6,7 @@ import { Wrapper } from "./style/writing";
 import { Button, HorizontalDiv } from "./style/component";
 import { Table, TableDataCell } from "./style/home";
 import { onAuthStateChanged } from "firebase/auth";
+import Header from "./component/header";
 
 export default function Detail() {
   const [data, setData] = useState<any>([]);
@@ -48,8 +49,12 @@ export default function Detail() {
   return (
     <Wrapper>
       {data.map((data: any) => {
-        return <h2 key={data.id}>{data.pannelName}</h2>;
+        return <div key={data.id}>
+        <Header title={data.pannelName} />
+        <h5>새 검침표를 생성합니다.</h5>
+        </div>
       })}
+      
       <Table>
         <tr>
           <th>날짜</th>

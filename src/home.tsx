@@ -3,9 +3,15 @@ import { auth, db } from "./firebase/firebase-config";
 import { onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from "react-router";
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
-import { Button } from "./style/component";
+import { Button, HorizontalDiv } from "./style/component";
 import { Wrapper } from "./style/home";
 import Table from "./component/table";
+import Header from "./component/header";
+
+const initialState = {
+  pageSize: 10,
+  pageIndex: 0
+};
 
 function Home() {
   const navigate = useNavigate();
@@ -46,7 +52,7 @@ function Home() {
 
     querySnapshot.forEach(async (doc: any) => {
       const data = doc.data();
-      let tableData = {}
+      let tableData = {};
       if (data.records[0] === undefined) {
         tableData = {
           id: data.id,
@@ -61,8 +67,8 @@ function Home() {
           latestRecord: "기록 없음",
           latestRecordDate: "",
           serial: data.serial,
-          shape: data.shape
-        }
+          shape: data.shape,
+        };
       } else {
         tableData = {
           id: data.id,
@@ -77,8 +83,8 @@ function Home() {
           latestRecord: data.records[0].record,
           latestRecordDate: convert(data.records[0].createdAt),
           serial: data.serial,
-          shape: data.shape
-        }
+          shape: data.shape,
+        };
       }
       arr.push(tableData);
       idArr.push(data.id);
@@ -90,11 +96,14 @@ function Home() {
 
   return (
     <Wrapper>
-      <h1>적산전력계 기록</h1>
+      <Header title="적산전력계" />
       <h5>판넬명을 터치하여 상세 화면으로 이동합니다.</h5>
-      <Table columns={columns} data={document} id={idList} />
-      <Button onClick={() => navigate("/creation")}>새판넬 등록</Button>
-      <Button onClick={() => navigate("/inspection")}>전체 점검하기</Button>
+      <Table columns={columns} data={document} id={idList} initialState={initialState} />
+
+      <HorizontalDiv>
+        <Button onClick={() => navigate("/creation")}>새판넬 등록</Button>
+        <Button onClick={() => navigate("/inspection")}>전체 점검하기</Button>
+      </HorizontalDiv>
     </Wrapper>
   );
 }

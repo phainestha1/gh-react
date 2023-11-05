@@ -11,13 +11,10 @@ function Login() {
   const navigate = useNavigate();
 
   const authUser = () => {
-    signInWithEmailAndPassword(auth, email, password)
+    signInWithEmailAndPassword(auth, email+"@gmail.com", password)
       .then((userCredential) => {
         const user = userCredential.user;
-        console.log(user);
-        if (user) {
-          navigate("/home");
-        }
+        if (user) { navigate("/home"); }
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -31,7 +28,7 @@ function Login() {
       <Input
         type="text"
         name="id"
-        placeholder="이메일"
+        placeholder="아이디"
         onChange={(event) => setEmail(event.target.value)}
         value={email}
       />

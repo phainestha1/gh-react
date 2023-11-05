@@ -5,6 +5,7 @@ import { useNavigate } from "react-router";
 import { Select, Wrapper } from "./style/creation";
 import { Button, Input } from "./style/component";
 import { onAuthStateChanged } from "firebase/auth";
+import Header from "./component/header";
 
 function Creation() {
   const [serial, setSerial] = useState("A");
@@ -51,7 +52,8 @@ function Creation() {
 
   return (
     <Wrapper>
-      <h1>적산전력계 검침표 생성</h1>
+      <Header title="검침표 생성" />
+      <h5>새 검침표를 생성합니다.</h5>
       <Select
         id="serial"
         name="순번"

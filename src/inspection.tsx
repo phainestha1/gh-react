@@ -106,6 +106,8 @@ export default function Inspection() {
       {inspectionList.length !== 0 ? (
         <>
           <h2>{inspectionList[index].pannelName}</h2>
+          <h4>계기 번호: {inspectionList[index].machineNumber}</h4>
+          <h4>점포명 : {inspectionList[index].clientName}</h4>
           <Input
             placeholder="지침을 입력하세요"
             type="text"

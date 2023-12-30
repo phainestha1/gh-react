@@ -1,12 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { getAuth, signOut } from "firebase/auth";
-import {
-  HeaderButton,
-  HeaderDiv,
-  HeaderLeft,
-  HeaderRight,
-} from "../style/header";
-import { FiLogOut } from 'react-icons/fi';
+import { HeaderDiv, HeaderLeft, HeaderRight } from "../style/header";
+import { FiLogOut } from "react-icons/fi";
 
 interface Props {
   title?: any;
@@ -34,7 +29,7 @@ export default function Header({ title }: Props) {
       </HeaderLeft>
       <HeaderRight>
         <h2>
-            <FiLogOut onClick={logout} />
+          <FiLogOut onClick={logout} />
         </h2>
       </HeaderRight>
     </HeaderDiv>

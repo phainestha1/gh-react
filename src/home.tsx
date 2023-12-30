@@ -18,7 +18,6 @@ function Home() {
   const navigate = useNavigate();
   const [document, setDocument] = useState<any>([]);
   const [idList, setIdList] = useState<any>([]);
-  const [records, setRecords] = useState<any>([]);
   const headers = [
     { label: "순번", key: "serial" },
     { label: "패널명", key: "pannelName" },
@@ -32,6 +31,7 @@ function Home() {
       { accessor: "serial", Header: "순번" },
       { accessor: "pannelName", Header: "판넬명" },
       { accessor: "machineNumber", Header: "계기번호" },
+      { accessor: "clientName", Header: "점포명" },
       { accessor: "latestRecord", Header: "지침" },
       { accessor: "latestRecordDate", Header: "최근 지침일" },
     ],
@@ -53,7 +53,6 @@ function Home() {
   const loadPannelData = async () => {
     const arr: any = [];
     const idArr: any = [];
-    const recordArr: any = [];
     const q = query(collection(db, "pannels"), orderBy("serial"));
     const convert = (int: number) => {
       const date = new Date(int);
@@ -81,7 +80,6 @@ function Home() {
           serial: data.serial,
           shape: data.shape,
         };
-        recordData = [];
       } else {
         tableData = {
           id: data.id,
@@ -98,16 +96,13 @@ function Home() {
           serial: data.serial,
           shape: data.shape,
         };
-        recordData = data.records;
       }
       arr.push(tableData);
       idArr.push(data.id);
-      recordArr.push(recordData);
     });
 
     setDocument([...arr]);
     setIdList([...idArr]);
-    setRecords([...recordArr]);
   };
 
   return (

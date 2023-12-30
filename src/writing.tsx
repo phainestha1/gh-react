@@ -81,7 +81,13 @@ export default function Writing() {
   return (
     <Wrapper>
       {data.map((data: any) => {
-        return <h2 key={data.id}>{data.pannelName}</h2>;
+        return (
+          <div key={data.id}>
+            <h2>{data.pannelName}</h2>
+            <h4>계기 번호 : {data.machineNumber}</h4>
+            <h4>점포명 : {data.clientName}</h4>
+          </div>
+        );
       })}
       <Input disabled name="dateOfRecord" value={convert(Date.now())} />
       <Input

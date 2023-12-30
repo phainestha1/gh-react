@@ -49,12 +49,16 @@ export default function Detail() {
   return (
     <Wrapper>
       {data.map((data: any) => {
-        return <div key={data.id}>
-        <Header title={data.pannelName} />
-        <h5>새 검침표를 생성합니다.</h5>
-        </div>
+        return (
+          <div key={data.id}>
+            <Header title={data.pannelName} />
+            <h5>계기 번호 : {data.machineNumber}</h5>
+            <h5>점포명 : {data.clientName}</h5>
+            <h5>새 검침표를 생성합니다.</h5>
+          </div>
+        );
       })}
-      
+
       <Table>
         <tr>
           <th>날짜</th>
